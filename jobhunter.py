@@ -20,7 +20,7 @@ def create_tables(cursor):
     # Must set Title to CHARSET utf8 unicode Source: http://mysql.rjweb.org/doc.php/charcoll.
     # Python is in latin-1 and error (Incorrect string value: '\xE2\x80\xAFAbi...') will occur if Description is not in unicode format due to the json data
     cursor.execute('''CREATE TABLE IF NOT EXISTS jobs (id INT PRIMARY KEY auto_increment, Job_id varchar(50) , 
-    company varchar (300), Created_at DATE, url varchar(30000), Title LONGBLOB, Description LONGBLOB ); ''')
+    company varchar (300), CHARSET utf8, Created_at DATE, url varchar(30000), Title LONGBLOB, Description LONGBLOB ); ''')
 
 
 # Query the database.
@@ -35,6 +35,12 @@ def add_new_job(cursor, jobdetails):
     # extract all required columns
     description = html2text.html2text(jobdetails['description'])
     date = jobdetails['publication_date'][0:10]
+    query = cursor.execute("INSERT INTO jobs( Description, Created_at " ") "
+               "VALUES(%s,%s)", (  description, date))
+    query = cursor.execute("INSERT INTO jobs( Description, Created_at " ") "
+               "VALUES(%s,%s)", (  description, date))
+    query = cursor.execute("INSERT INTO jobs( Description, Created_at " ") "
+               "VALUES(%s,%s)", (  description, date))
     query = cursor.execute("INSERT INTO jobs( Description, Created_at " ") "
                "VALUES(%s,%s)", (  description, date))
      # %s is what is needed for Mysqlconnector as SQLite3 uses ? the Mysqlconnector uses %s
