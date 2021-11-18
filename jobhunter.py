@@ -35,27 +35,33 @@ def add_new_job(cursor, jobdetails):
     # extract all required columns
     description = html2text.html2text(jobdetails['description'])
     date = jobdetails['publication_date'][0:10]
-    query = cursor.execute("INSERT INTO jobs( Description, Created_at " ") "
-               "VALUES(%s,%s)", (  description, date))
-    query = cursor.execute("INSERT INTO jobs( Description, Created_at " ") "
-               "VALUES(%s,%s)", (  description, date))
-    query = cursor.execute("INSERT INTO jobs( Description, Created_at " ") "
-               "VALUES(%s,%s)", (  description, date))
-    query = cursor.execute("INSERT INTO jobs( Description, Created_at " ") "
-               "VALUES(%s,%s)", (  description, date))
-     # %s is what is needed for Mysqlconnector as SQLite3 uses ? the Mysqlconnector uses %s
+    job_id = jobdetails['id']
+    company = jobdetails['company']
+    url = jobdetails['url']
+    Title = jobdetails['Title']
+    Description = jobdetails['Description']
+    Created_at = jobdetails['Created_at]
+    query = cursor.execute("INSERT INTO jobs( Job_id, company, url, Title, Description, Created_at " ") "
+               "VALUES(%s,%s)", (  description, date, job_id, company, url, Title, Created_at))
+               
+         # %s is what is needed for Mysqlconnector as SQLite3 uses ? the Mysqlconnector uses %s
     return query_sql(cursor, query)
 
 
 # Check if new job
 def check_if_job_exists(cursor, jobdetails):
+    
     ##Add your code here
+    job_id = jobdetails[id]
+    query = "SELECT * FROM Jobs WHERE Job_id = \"%s\"" % job_id
     query = "UPDATE"
     return query_sql(cursor, query)
 
 # Deletes job
 def delete_job(cursor, jobdetails):
     ##Add your code here
+    job_id = jobdetails['id']
+    query = "DELETE FROM Jobs WHERE Job_id = \"%s\"" % job_id
     query = "UPDATE"
     return query_sql(cursor, query)
 
