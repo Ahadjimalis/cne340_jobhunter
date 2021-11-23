@@ -25,7 +25,8 @@ def create_tables(cursor):
 
 # Query the database.
 # You should not need to edit anything in this function
-def query_sql(cursor, query):
+def query_sql(cursor, query
+              ):
     cursor.execute(query)
     return cursor
 
@@ -40,7 +41,7 @@ def add_new_job(cursor, jobdetails):
     url = jobdetails['url']
     Title = jobdetails['Title']
     Description = jobdetails['Description']
-    Created_at = jobdetails['Created_at]
+    Created_at = jobdetails['Created_at']
     query = cursor.execute("INSERT INTO jobs( Job_id, company, url, Title, Description, Created_at " ") "
                "VALUES(%s,%s)", (  description, date, job_id, company, url, Title, Created_at))
                
@@ -88,14 +89,26 @@ def add_or_delete_job(jobpage, cursor):
     for jobdetails in jobpage['jobs']:  # EXTRACTS EACH JOB FROM THE JOB LIST. It errored out until I specified jobs. This is because it needs to look at the jobs dictionary from the API. https://careerkarma.com/blog/python-typeerror-int-object-is-not-iterable/
         # Add in your code here to check if the job already exists in the DB
         check_if_job_exists(cursor, jobdetails)
-        is_job_found = len(
-        cursor.fetchall()) > 0  # https://stackoverflow.com/questions/2511679/python-number-of-rows-affected-by-cursor-executeselect
+        is_job_found = len(cursor.fetchall()) > 0  # https://stackoverflow.com/questions/2511679/python-number-of-rows-affected-by-cursor-executeselect
         if is_job_found:
-
+            now = datetime.now()
+            job_date = datetime.strptime(jobdetails['created_at'], "%a %b %d %H:%M:%S %Z %Y")
+            if (now - job_date).days > 30:
+                print("Delete job: " +
+                      jobdetails["title"] +
+                      " from " + jobdetails["company"] +
+                      ", Created at: " + jobdetails["created_at"] +
+                      ", JobID: " + jobdetails['id'])
+                delete_job(cursor, jobdetails)
         else:
             # INSERT JOB
             # Add in your code here to notify the user of a new posting. This code will notify the new user
-
+            print("New job is found: " +
+                  jobdetails["title"] +
+                  " from " + jobdetails["company"] +
+                  ", Created at: " + jobdetails["created_at"] +
+                  ", JobID: " + jobdetails['id'])
+            add_new_job(cursor, jobdetails)
 
 
 # Setup portion of the program. Take arguments and set up the script
